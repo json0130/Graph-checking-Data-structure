@@ -314,6 +314,13 @@ public class Graph<T extends Comparable<T>> {
       return data;
     }
 
+    T peek() {
+      if (isEmpty()) {
+        //throw new NoSuchElementException("Queue is empty");
+    }
+      return head.data;
+    }
+
     private class Node<T> {
       T data;
       Node<T> next;
@@ -390,9 +397,49 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public List<T> recursiveBreadthFirstSearch() {
-    // TODO: Task 3.
-    throw new UnsupportedOperationException();
+    Set<T> roots = this.getRoots();
+    List<T> visited = new ArrayList<>();
+    Set<T> visitedSet = new HashSet<>();
+    CustomQueue<T> queue = new CustomQueue<>();
+
+    if (verticies.isEmpty()) {
+        return visited;
+    }
+
+    for (T root : roots) {
+        recursiveBFS(root, visited, visitedSet, queue);
+    }
+
+    return visited;
+    //throw new UnsupportedOperationException();
   }
+
+  private void recursiveBFS(T vertex, List<T> visited, Set<T> visitedSet, CustomQueue<T> queue) {
+    if (visitedSet.contains(vertex)) {
+        return;
+    }
+
+    visited.add(vertex);
+    visitedSet.add(vertex);
+    queue.enqueue(vertex);
+
+    while (!queue.isEmpty()) {
+        T currentVertex = queue.dequeue();
+        Set<T> vert = getVerticies(currentVertex);
+        for (T v : vert) {
+            if (!visitedSet.contains(v)) {
+                visited.add(v);
+                visitedSet.add(v);
+                queue.enqueue(v);
+            }
+        }
+    }
+
+    if (!queue.isEmpty()) {
+        T nextVertex = queue.peek();
+        recursiveBFS(nextVertex, visited, visitedSet, queue);
+    }
+}
 
   public List<T> recursiveDepthFirstSearch() {
     // TODO: Task 3.
