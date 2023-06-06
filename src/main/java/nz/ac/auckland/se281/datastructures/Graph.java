@@ -24,11 +24,13 @@ public class Graph<T extends Comparable<T>> {
     private Node<T> head;
     private Node<T> tail;
 
-    boolean isEmpty() {
+    public boolean isEmpty() {
+      // Check if the queue is empty.
       return head == null;
     }
 
-    void enqueue(T data) {
+    public void enqueue(T data) {
+      // Add a new node to the tail of the queue.
       Node<T> newNode = new Node<>(data);
       if (isEmpty()) {
         head = newNode;
@@ -39,10 +41,9 @@ public class Graph<T extends Comparable<T>> {
       }
     }
 
-    T dequeue() {
-      if (isEmpty()) {
-        // throw new NoSuchElementException("Queue is empty");
-      }
+    public T dequeue() {
+      // Remove the head of the queue.
+      if (isEmpty()) {}
       T data = head.data;
       head = head.next;
       if (head == null) {
@@ -51,10 +52,8 @@ public class Graph<T extends Comparable<T>> {
       return data;
     }
 
-    T peek() {
-      if (isEmpty()) {
-        // throw new NoSuchElementException("Queue is empty");
-      }
+    public T peek() {
+      // Return the head of the queue.
       return head.data;
     }
 
@@ -80,10 +79,6 @@ public class Graph<T extends Comparable<T>> {
     }
 
     public T pop() {
-      if (isEmpty()) {
-        // throw new NoSuchElementException("Stack is empty");
-      }
-
       T data = list.getFirst();
       list.removeFirst();
       return data;
@@ -104,17 +99,10 @@ public class Graph<T extends Comparable<T>> {
     }
 
     public T getFirst() {
-      if (isEmpty()) {
-        // throw new NoSuchElementException("List is empty");
-      }
-
       return head.data;
     }
 
     public void removeFirst() {
-      if (isEmpty()) {
-        // throw new NoSuchElementException("List is empty");
-      }
       head = head.next;
     }
 
@@ -137,6 +125,11 @@ public class Graph<T extends Comparable<T>> {
     this.edges = edges;
   }
 
+  /**
+   * It returns the set of roots of the graph.
+   *
+   * @return the set of roots.
+   */
   public Set<T> getRoots() {
     // Check if the source and destination of edges are equal to each other.
     // If they are, then the vertex is a root.
@@ -169,6 +162,12 @@ public class Graph<T extends Comparable<T>> {
     return roots;
   }
 
+  /**
+   * It checks if the selected vertex is a destination or not.
+   *
+   * @param vertex the vertex to find if it is a destination or not.
+   * @return the boolean value of whether the vertex is a destination or not.
+   */
   public boolean checkDesitination(T vertex) {
     for (Edge<T> edge : edges) {
       if (edge.getDestination() == vertex) {
@@ -178,6 +177,11 @@ public class Graph<T extends Comparable<T>> {
     return true;
   }
 
+  /**
+   * It checks if the graph is reflexive or not.
+   *
+   * @return the boolean value of whether the graph is a reflexive or not.
+   */
   public boolean isReflexive() {
     // Check if the graph is reflexive or not.
     int count = 0;
@@ -194,6 +198,11 @@ public class Graph<T extends Comparable<T>> {
     return false;
   }
 
+  /**
+   * It checks if the graph is symmetric or not.
+   *
+   * @return the boolean value of whether the graph is a symmetric or not.
+   */
   public boolean isSymmetric() {
     // Check is the graph is symmetric or not.
     int count = 0;
@@ -218,6 +227,11 @@ public class Graph<T extends Comparable<T>> {
     return false;
   }
 
+  /**
+   * It checks if the graph is transitive or not.
+   *
+   * @return the boolean value of whether the graph is a transitive or not.
+   */
   public boolean isTransitive() {
     // Check if the graph is transitive or not.
     for (Edge<T> edge : edges) {
@@ -234,6 +248,13 @@ public class Graph<T extends Comparable<T>> {
     return true;
   }
 
+  /**
+   * It checks if the set of edges is contains the element or not.
+   *
+   * @param source the source of the edge.
+   * @param destination the destination of the edge.
+   * @return the boolean value of whether the set of edges contain the input elements or not.
+   */
   public boolean containElement(T source, T destination) {
     for (Edge<T> edge : edges) {
       if ((edge.getSource() == source) && (edge.getDestination() == destination)) {
@@ -243,6 +264,11 @@ public class Graph<T extends Comparable<T>> {
     return false;
   }
 
+  /**
+   * It checks if the graph is andti-symmetric or not.
+   *
+   * @return the boolean value of whether the graph is an anti-symmetric or not.
+   */
   public boolean isAntiSymmetric() {
     // Check if the graph is anti-symmetric or not.
     int count = 0;
@@ -265,6 +291,11 @@ public class Graph<T extends Comparable<T>> {
     return false;
   }
 
+  /**
+   * It checks if the graph has a equivalence relation or not.
+   *
+   * @return the boolean value of whether the graph is an equivalence relation or not.
+   */
   public boolean isEquivalence() {
     // Check if the graph is an equivalence relation or not.
     if (isReflexive() && isSymmetric() && isTransitive()) {
@@ -273,6 +304,12 @@ public class Graph<T extends Comparable<T>> {
     return false;
   }
 
+  /**
+   * returns the set of verticies that are equivalence class to the input vertex.
+   *
+   * @param vertex the vertex to find the equivalence class of.
+   * @return the set of verticies that are equivalence class to the input vertex.
+   */
   public Set<T> getEquivalenceClass(T vertex) {
     // Get the equivalence class of a vertex.
     Set<T> equivalenceClass = new HashSet<T>();
@@ -292,17 +329,25 @@ public class Graph<T extends Comparable<T>> {
     return equivalenceClass;
   }
 
+  /**
+   * performs an iterative BreadthFirstSearch, and returns the searched list of verticies.
+   *
+   * @return the list of verticies, as searched through by the BreadthFirstSearch algorithm.
+   */
   public List<T> iterativeBreadthFirstSearch() {
     // iterate through the graph using breadth first search
+    // Initialise the queue, visited list and visited set.
     Set<T> roots = this.getRoots();
     List<T> visited = new ArrayList<>();
     Set<T> visitedSet = new HashSet<>();
     CustomQueue<T> queue = new CustomQueue<>();
 
+    // Check if the graph is empty.
     if (verticies.isEmpty()) {
       return visited;
     }
 
+    // Check each roots
     for (T root : roots) {
       if (!visitedSet.contains(root)) {
         visited.add(root);
@@ -331,6 +376,12 @@ public class Graph<T extends Comparable<T>> {
     return visited;
   }
 
+  /**
+   * returns the set of verticies that are adjacent to the given vertex, in reverse numerical order.
+   *
+   * @param vertex the vertex to find the adjacent verticies of.
+   * @return the set of verticies that are adjacent to the given vertex.
+   */
   public Set<T> getVerticies(T vertex) {
     Set<T> verticies = new TreeSet<>(new NumericalComparator());
     for (Edge<T> edge : edges) {
@@ -350,6 +401,11 @@ public class Graph<T extends Comparable<T>> {
     }
   }
 
+  /**
+   * performs an iterative DepthFirstSearch, and returns the searched list of verticies.
+   *
+   * @return the list of verticies, as searched through by the DepthFirstSearch algorithm.
+   */
   public List<T> iterativeDepthFirstSearch() {
     // iterate through the graph using depth first search
     Set<T> roots = this.getRoots();
@@ -372,7 +428,7 @@ public class Graph<T extends Comparable<T>> {
         T current = stack.pop();
         for (Edge<T> edge : edges) {
           if (edge.getSource().equals(current) && !visitedSet.contains(edge.getDestination())) {
-            T destination = current;
+            // T destination = current;
             //   Set<T> last = null;
             //   do {
             //     Set<T> vert = getVerticies(destination);
@@ -452,15 +508,11 @@ public class Graph<T extends Comparable<T>> {
     return visited;
   }
 
-  public boolean destination(T vertex) {
-    for (Edge<T> edge : edges) {
-      if (vertex.equals(edge.getDestination())) {
-        return false;
-      }
-    }
-    return true;
-  }
-
+  /**
+   * performs an recursive BreadthFirstSearch, and returns the searched list of verticies.
+   *
+   * @return the list of verticies, as searched through by the BreadthFirstSearch algorithm.
+   */
   public List<T> recursiveBreadthFirstSearch() {
     // iterate through the graph using breadth first search
     Set<T> roots = this.getRoots();
@@ -479,6 +531,14 @@ public class Graph<T extends Comparable<T>> {
     return visited;
   }
 
+  /**
+   * performs a recursive BreadthFirstSearch to update the linkedList.
+   *
+   * @param vertex roots of the vertex.
+   * @param queue queue of verticies to visit.
+   * @param visitedSet visited set of verticies of the graph.
+   * @param vistied linkedList of the vertex.
+   */
   private void recursiveBfs(T vertex, List<T> visited, Set<T> visitedSet, CustomQueue<T> queue) {
     // This is a recursive method that implements breadth first search
     if (visitedSet.contains(vertex)) {
@@ -507,6 +567,11 @@ public class Graph<T extends Comparable<T>> {
     }
   }
 
+  /**
+   * performs an recursive DepthFirstSearch, and returns the searched list of verticies.
+   *
+   * @return the list of verticies, as searched through by the DepthFirstSearch algorithm.
+   */
   public List<T> recursiveDepthFirstSearch() {
     // iterate through the graph using depth first search
     Set<T> roots = this.getRoots();
@@ -520,6 +585,13 @@ public class Graph<T extends Comparable<T>> {
     return visited;
   }
 
+  /**
+   * performs a recursive DepthFirstSearch to update the linkedList.
+   *
+   * @param vertex roots of the vertex.
+   * @param visitedSet visited set of verticies of the graph.
+   * @param vistied linkedList of the vertex.
+   */
   private void recursiveDfs(T vertex, List<T> visited, Set<T> visitedSet) {
     // This is a recursive method that implements depth first search
     if (visitedSet.contains(vertex)) {
