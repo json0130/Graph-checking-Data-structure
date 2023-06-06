@@ -16,13 +16,12 @@ import java.util.TreeSet;
  * @param <T> The type of each vertex, that have a total ordering.
  */
 public class Graph<T extends Comparable<T>> {
-
-  private Set<T> verticies;
   private Set<Edge<T>> edges;
+  private Set<T> verticies;
 
   private class CustomQueue<T> {
-    private Node<T> head;
-    private Node<T> tail;
+    Node<T> tail;
+    Node<T> head;
 
     public boolean isEmpty() {
       // Check if the queue is empty.
@@ -43,9 +42,7 @@ public class Graph<T extends Comparable<T>> {
 
     public T dequeue() {
       // Remove the head of the queue.
-      if (isEmpty()) {}
       T data = head.data;
-      head = head.next;
       if (head == null) {
         tail = null;
       }
@@ -75,38 +72,45 @@ public class Graph<T extends Comparable<T>> {
     }
 
     public void push(T data) {
+      // Add a new node to the head of the stack.
       list.addFirst(data);
     }
 
     public T pop() {
+      // Remove the head of the stack.
       T data = list.getFirst();
       list.removeFirst();
       return data;
     }
 
     public boolean isEmpty() {
+      // Check if the stack is empty.
       return list.isEmpty();
     }
   }
 
   private class CustomLinkedList<T> {
-    private Node<T> head;
+    Node<T> head;
 
     public void addFirst(T data) {
+      // Add a new node to the head of the linked list.
       Node<T> newNode = new Node<>(data);
       newNode.next = head;
       head = newNode;
     }
 
     public T getFirst() {
+      // Return the head of the linked list.
       return head.data;
     }
 
     public void removeFirst() {
+      // Remove the head of the linked list.
       head = head.next;
     }
 
     public boolean isEmpty() {
+      // Check if the linked list is empty.
       return head == null;
     }
 
