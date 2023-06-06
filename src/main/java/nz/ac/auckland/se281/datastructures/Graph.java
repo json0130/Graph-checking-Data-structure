@@ -316,8 +316,8 @@ public class Graph<T extends Comparable<T>> {
 
     T peek() {
       if (isEmpty()) {
-        //throw new NoSuchElementException("Queue is empty");
-    }
+        // throw new NoSuchElementException("Queue is empty");
+      }
       return head.data;
     }
 
@@ -403,20 +403,20 @@ public class Graph<T extends Comparable<T>> {
     CustomQueue<T> queue = new CustomQueue<>();
 
     if (verticies.isEmpty()) {
-        return visited;
+      return visited;
     }
 
     for (T root : roots) {
-        recursiveBFS(root, visited, visitedSet, queue);
+      recursiveBFS(root, visited, visitedSet, queue);
     }
 
     return visited;
-    //throw new UnsupportedOperationException();
+    // throw new UnsupportedOperationException();
   }
 
   private void recursiveBFS(T vertex, List<T> visited, Set<T> visitedSet, CustomQueue<T> queue) {
     if (visitedSet.contains(vertex)) {
-        return;
+      return;
     }
 
     visited.add(vertex);
@@ -424,25 +424,48 @@ public class Graph<T extends Comparable<T>> {
     queue.enqueue(vertex);
 
     while (!queue.isEmpty()) {
-        T currentVertex = queue.dequeue();
-        Set<T> vert = getVerticies(currentVertex);
-        for (T v : vert) {
-            if (!visitedSet.contains(v)) {
-                visited.add(v);
-                visitedSet.add(v);
-                queue.enqueue(v);
-            }
+      T currentVertex = queue.dequeue();
+      Set<T> vert = getVerticies(currentVertex);
+      for (T v : vert) {
+        if (!visitedSet.contains(v)) {
+          visited.add(v);
+          visitedSet.add(v);
+          queue.enqueue(v);
         }
+      }
     }
 
     if (!queue.isEmpty()) {
-        T nextVertex = queue.peek();
-        recursiveBFS(nextVertex, visited, visitedSet, queue);
+      T nextVertex = queue.peek();
+      recursiveBFS(nextVertex, visited, visitedSet, queue);
     }
-}
+  }
 
   public List<T> recursiveDepthFirstSearch() {
-    // TODO: Task 3.
-    throw new UnsupportedOperationException();
+    // iterate through the graph using depth first search
+    Set<T> roots = this.getRoots();
+    List<T> visited = new ArrayList<>();
+    Set<T> visitedSet = new HashSet<>();
+
+    for (T root : roots) {
+      recursiveDFS(root, visited, visitedSet);
+    }
+
+    return visited;
+    // throw new UnsupportedOperationException();
+  }
+
+  private void recursiveDFS(T vertex, List<T> visited, Set<T> visitedSet) {
+    if (visitedSet.contains(vertex)) {
+      return;
+    }
+
+    visited.add(vertex);
+    visitedSet.add(vertex);
+
+    Set<T> vert = getVerticies(vertex);
+    for (T v : vert) {
+      recursiveDFS(v, visited, visitedSet);
+    }
   }
 }
