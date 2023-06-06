@@ -198,11 +198,6 @@ public class Graph<T extends Comparable<T>> {
       return visited;
     }
 
-    // T startVertex = roots.iterator().next();
-    // visited.add(startVertex);
-    // visitedSet.add(startVertex);
-    // queue.enqueue(startVertex);
-
     for (T root : roots) {
       if (!visitedSet.contains(root)) {
         visited.add(root);
@@ -248,6 +243,10 @@ public class Graph<T extends Comparable<T>> {
     List<T> visited = new ArrayList<>();
     Set<T> visitedSet = new HashSet<>();
     CustomStack<T> stack = new CustomStack<>();
+
+    if (verticies.isEmpty()) {
+      return visited;
+    }
 
     for (T root : roots) {
       if (!visitedSet.contains(root)) {
