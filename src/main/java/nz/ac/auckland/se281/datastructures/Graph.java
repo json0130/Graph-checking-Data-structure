@@ -17,8 +17,22 @@ import java.util.TreeSet;
  */
 public class Graph<T extends Comparable<T>> {
 
-  private Set<Edge<T>> edges;
-  private Set<T> verticies;
+  private class NumericalComparator implements Comparator<T> {
+    /**
+     * It overrides the NumericalComparator class to compare the verticies in reverse numerical
+     * order.
+     *
+     * @param o1 the first vertex to compare.
+     * @param o2 the second vertex to compare.
+     * @return the integer value of the comparison.
+     */
+    @Override
+    public int compare(T o1, T o2) {
+      Integer i1 = Integer.parseInt(o1.toString());
+      Integer i2 = Integer.parseInt(o2.toString());
+      return i1.compareTo(i2);
+    }
+  }
 
   private class CustomQueue<T> {
     private Node<T> tail;
@@ -45,6 +59,7 @@ public class Graph<T extends Comparable<T>> {
     public T dequeue() {
       // Remove the head of the queue.
       T data = head.data;
+      head = head.next;
       if (head == null) {
         tail = null;
       }
@@ -126,6 +141,15 @@ public class Graph<T extends Comparable<T>> {
     }
   }
 
+  private Set<Edge<T>> edges;
+  private Set<T> verticies;
+
+  /**
+   * Creates a new graph.
+   *
+   * @param verticies The set of verticies in the graph.
+   * @param edges The set of edges in the graph.
+   */
   public Graph(Set<T> verticies, Set<Edge<T>> edges) {
     this.verticies = verticies;
     this.edges = edges;
@@ -342,6 +366,7 @@ public class Graph<T extends Comparable<T>> {
    */
   public List<T> iterativeBreadthFirstSearch() {
     // iterate through the graph using breadth first search
+    // return the list of verticies, as searched through by the BreadthFirstSearch algorithm
     Set<T> roots = this.getRoots();
     List<T> visited = new ArrayList<>();
     Set<T> visitedSet = new HashSet<>();
@@ -391,23 +416,6 @@ public class Graph<T extends Comparable<T>> {
     return verticies;
   }
 
-  private class NumericalComparator implements Comparator<T> {
-    /**
-     * It overrides the NumericalComparator class to compare the verticies in reverse numerical
-     * order.
-     *
-     * @param o1 the first vertex to compare.
-     * @param o2 the second vertex to compare.
-     * @return the integer value of the comparison.
-     */
-    @Override
-    public int compare(T o1, T o2) {
-      Integer i1 = Integer.parseInt(o1.toString());
-      Integer i2 = Integer.parseInt(o2.toString());
-      return i1.compareTo(i2);
-    }
-  }
-
   /**
    * performs an iterative DepthFirstSearch, and returns the searched list of verticies.
    *
@@ -415,6 +423,7 @@ public class Graph<T extends Comparable<T>> {
    */
   public List<T> iterativeDepthFirstSearch() {
     // iterate through the graph using depth first search
+    // return the list of verticies, as searched through by the DepthFirstSearch algorithm
     Set<T> roots = this.getRoots();
     List<T> visited = new ArrayList<>();
     Set<T> visitedSet = new HashSet<>();
