@@ -16,12 +16,13 @@ import java.util.TreeSet;
  * @param <T> The type of each vertex, that have a total ordering.
  */
 public class Graph<T extends Comparable<T>> {
+
   private Set<Edge<T>> edges;
   private Set<T> verticies;
 
   private class CustomQueue<T> {
-    Node<T> tail;
-    Node<T> head;
+    private Node<T> tail;
+    private Node<T> head;
 
     public boolean isEmpty() {
       // Check if the queue is empty.
@@ -31,6 +32,7 @@ public class Graph<T extends Comparable<T>> {
     public void enqueue(T data) {
       // Add a new node to the tail of the queue.
       Node<T> newNode = new Node<>(data);
+      // Check if the queue is empty.
       if (isEmpty()) {
         head = newNode;
         tail = newNode;
@@ -90,7 +92,7 @@ public class Graph<T extends Comparable<T>> {
   }
 
   private class CustomLinkedList<T> {
-    Node<T> head;
+    private Node<T> head;
 
     public void addFirst(T data) {
       // Add a new node to the head of the linked list.
@@ -339,40 +341,37 @@ public class Graph<T extends Comparable<T>> {
    * @return the list of verticies, as searched through by the BreadthFirstSearch algorithm.
    */
   public List<T> iterativeBreadthFirstSearch() {
+    // iterate through the graph using breadth first search
     Set<T> roots = this.getRoots();
     List<T> visited = new ArrayList<>();
     Set<T> visitedSet = new HashSet<>();
     CustomQueue<T> queue = new CustomQueue<>();
-
     if (verticies.isEmpty()) {
       return visited;
     }
-
     for (T root : roots) {
       if (!visitedSet.contains(root)) {
         visited.add(root);
         visitedSet.add(root);
         queue.enqueue(root);
-
-        while (!queue.isEmpty()) {
-          T currentVertex = queue.dequeue();
-          for (Edge<T> edge : edges) {
-            if (edge.getSource().equals(currentVertex)
-                && !visitedSet.contains(edge.getDestination())) {
-              Set<T> vert = getVerticies(currentVertex);
-              for (T v : vert) {
-                if (!visitedSet.contains(v)) {
-                  visited.add(v);
-                  visitedSet.add(v);
-                  queue.enqueue(v);
-                }
+      }
+      while (!queue.isEmpty()) {
+        T currentVertex = queue.dequeue();
+        for (Edge<T> edge : edges) {
+          if (edge.getSource().equals(currentVertex)
+              && !visitedSet.contains(edge.getDestination())) {
+            Set<T> vert = getVerticies(currentVertex);
+            for (T v : vert) {
+              if (!visitedSet.contains(v)) {
+                visited.add(v);
+                visitedSet.add(v);
+                queue.enqueue(v);
               }
             }
           }
         }
       }
     }
-
     return visited;
   }
 
@@ -393,6 +392,14 @@ public class Graph<T extends Comparable<T>> {
   }
 
   private class NumericalComparator implements Comparator<T> {
+    /**
+     * It overrides the NumericalComparator class to compare the verticies in reverse numerical
+     * order.
+     *
+     * @param o1 the first vertex to compare.
+     * @param o2 the second vertex to compare.
+     * @return the integer value of the comparison.
+     */
     @Override
     public int compare(T o1, T o2) {
       Integer i1 = Integer.parseInt(o1.toString());
@@ -442,29 +449,30 @@ public class Graph<T extends Comparable<T>> {
                   visitedSet.add(v2);
                   stack.push(v2);
                 }
-                // Set<T> vert3 = getVerticies(v2);
-                // for (T v3 : vert3) {
-                //   if (!visitedSet.contains(v3)) {
-                //     visited.add(v3);
-                //     visitedSet.add(v3);
-                //     stack.push(v3);
-                //   }
-                //   Set<T> vert4 = getVerticies(v3);
-                //   for (T v4 : vert4) {
-                //     if (!visitedSet.contains(v4)) {
-                //       visited.add(v4);
-                //       visitedSet.add(v4);
-                //       stack.push(v4);
-                //     }
-                //     Set<T> vert5 = getVerticies(v4);
-                //     for (T v5 : vert5) {
-                //       if (!visitedSet.contains(v5)) {
-                //         visited.add(v5);
-                //         visitedSet.add(v5);
-                //         stack.push(v5);
-                //       }
-                //     }
-                //   }
+                Set<T> vert3 = getVerticies(v2);
+                for (T v3 : vert3) {
+                  if (!visitedSet.contains(v3)) {
+                    visited.add(v3);
+                    visitedSet.add(v3);
+                    stack.push(v3);
+                  }
+                  Set<T> vert4 = getVerticies(v3);
+                  for (T v4 : vert4) {
+                    if (!visitedSet.contains(v4)) {
+                      visited.add(v4);
+                      visitedSet.add(v4);
+                      stack.push(v4);
+                    }
+                    Set<T> vert5 = getVerticies(v4);
+                    for (T v5 : vert5) {
+                      if (!visitedSet.contains(v5)) {
+                        visited.add(v5);
+                        visitedSet.add(v5);
+                        stack.push(v5);
+                      }
+                    }
+                  }
+                }
               }
             }
           }
