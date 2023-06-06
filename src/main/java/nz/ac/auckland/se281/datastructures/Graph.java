@@ -339,37 +339,33 @@ public class Graph<T extends Comparable<T>> {
    * @return the list of verticies, as searched through by the BreadthFirstSearch algorithm.
    */
   public List<T> iterativeBreadthFirstSearch() {
-    // iterate through the graph using breadth first search
-    // Initialise the queue, visited list and visited set.
     Set<T> roots = this.getRoots();
     List<T> visited = new ArrayList<>();
     Set<T> visitedSet = new HashSet<>();
     CustomQueue<T> queue = new CustomQueue<>();
 
-    // Check if the graph is empty.
     if (verticies.isEmpty()) {
       return visited;
     }
 
-    // Check each roots
     for (T root : roots) {
       if (!visitedSet.contains(root)) {
         visited.add(root);
         visitedSet.add(root);
         queue.enqueue(root);
-      }
 
-      while (!queue.isEmpty()) {
-        T currentVertex = queue.dequeue();
-        for (Edge<T> edge : edges) {
-          if (edge.getSource().equals(currentVertex)
-              && !visitedSet.contains(edge.getDestination())) {
-            Set<T> vert = getVerticies(currentVertex);
-            for (T v : vert) {
-              if (!visitedSet.contains(v)) {
-                visited.add(v);
-                visitedSet.add(v);
-                queue.enqueue(v);
+        while (!queue.isEmpty()) {
+          T currentVertex = queue.dequeue();
+          for (Edge<T> edge : edges) {
+            if (edge.getSource().equals(currentVertex)
+                && !visitedSet.contains(edge.getDestination())) {
+              Set<T> vert = getVerticies(currentVertex);
+              for (T v : vert) {
+                if (!visitedSet.contains(v)) {
+                  visited.add(v);
+                  visitedSet.add(v);
+                  queue.enqueue(v);
+                }
               }
             }
           }
@@ -432,39 +428,6 @@ public class Graph<T extends Comparable<T>> {
         T current = stack.pop();
         for (Edge<T> edge : edges) {
           if (edge.getSource().equals(current) && !visitedSet.contains(edge.getDestination())) {
-            // T destination = current;
-            //   Set<T> last = null;
-            //   do {
-            //     Set<T> vert = getVerticies(destination);
-            //     if (vert == last) {
-            //       for (T v : last) {
-            //         if (!visitedSet.contains(v)) {
-            //           visited.add(v);
-            //           visitedSet.add(v);
-            //           stack.push(v);
-            //           destination = v;
-            //           if (!checkDesitination(destination)) {
-            //             break;
-            //           }
-            //         }
-            //       }
-            //     } else {
-            //       for (T l : vert) {
-            //         if (!visitedSet.contains(l)) {
-            //           visited.add(l);
-            //           visitedSet.add(l);
-            //           stack.push(l);
-            //           destination = l;
-            //         }
-            //         if (!checkDesitination(destination)) {
-            //           last = vert;
-            //           break;
-            //         }
-            //       }
-            //     }
-            //   } while (!checkDesitination(destination));
-            // }
-
             Set<T> vert = getVerticies(current);
             for (T v : vert) {
               if (!visitedSet.contains(v)) {
@@ -479,30 +442,29 @@ public class Graph<T extends Comparable<T>> {
                   visitedSet.add(v2);
                   stack.push(v2);
                 }
-                Set<T> vert3 = getVerticies(v2);
-                for (T v3 : vert3) {
-                  if (!visitedSet.contains(v3)) {
-                    visited.add(v3);
-                    visitedSet.add(v3);
-                    stack.push(v3);
-                  }
-                  Set<T> vert4 = getVerticies(v3);
-                  for (T v4 : vert4) {
-                    if (!visitedSet.contains(v4)) {
-                      visited.add(v4);
-                      visitedSet.add(v4);
-                      stack.push(v4);
-                    }
-                    Set<T> vert5 = getVerticies(v4);
-                    for (T v5 : vert5) {
-                      if (!visitedSet.contains(v5)) {
-                        visited.add(v5);
-                        visitedSet.add(v5);
-                        stack.push(v5);
-                      }
-                    }
-                  }
-                }
+                // Set<T> vert3 = getVerticies(v2);
+                // for (T v3 : vert3) {
+                //   if (!visitedSet.contains(v3)) {
+                //     visited.add(v3);
+                //     visitedSet.add(v3);
+                //     stack.push(v3);
+                //   }
+                //   Set<T> vert4 = getVerticies(v3);
+                //   for (T v4 : vert4) {
+                //     if (!visitedSet.contains(v4)) {
+                //       visited.add(v4);
+                //       visitedSet.add(v4);
+                //       stack.push(v4);
+                //     }
+                //     Set<T> vert5 = getVerticies(v4);
+                //     for (T v5 : vert5) {
+                //       if (!visitedSet.contains(v5)) {
+                //         visited.add(v5);
+                //         visitedSet.add(v5);
+                //         stack.push(v5);
+                //       }
+                //     }
+                //   }
               }
             }
           }
