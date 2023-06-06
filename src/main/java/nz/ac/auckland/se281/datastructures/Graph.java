@@ -189,7 +189,11 @@ public class Graph<T extends Comparable<T>> {
         }
       }
     }
-    return roots;
+    Set<T> orderSet = new TreeSet<T>(new NumericalComparator());
+    for (T root : roots) {
+      orderSet.add(root);
+    }
+    return orderSet;
   }
 
   /**
