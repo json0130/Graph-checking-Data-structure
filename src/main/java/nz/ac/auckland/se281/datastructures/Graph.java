@@ -213,14 +213,15 @@ public class Graph<T extends Comparable<T>> {
       while (!queue.isEmpty()) {
         T currentVertex = queue.dequeue();
         for (Edge<T> edge : edges) {
-          if (edge.getSource().equals(currentVertex)) {
-            if (edge.getSource().equals(currentVertex)
-                && !visitedSet.contains(edge.getDestination())) {
-              
-              T nextVertex = edge.getDestination();
-              visited.add(nextVertex);
-              visitedSet.add(nextVertex);
-              queue.enqueue(nextVertex);
+          if (edge.getSource().equals(currentVertex)
+              && !visitedSet.contains(edge.getDestination())) {
+            Set<T> vert = getVerticies(currentVertex);
+            for (T v : vert) {
+              if (!visitedSet.contains(v)) {
+                visited.add(v);
+                visitedSet.add(v);
+                queue.enqueue(v);
+              }
             }
           }
         }
@@ -239,6 +240,48 @@ public class Graph<T extends Comparable<T>> {
       }
     }
     return verticies;
+  }
+
+  public List<T> iterativeDepthFirstSearch() {
+    // iterate through the graph using depth first search
+    Set<T> roots = this.getRoots();
+    List<T> visited = new ArrayList<>();
+    Set<T> visitedSet = new HashSet<>();
+    CustomStack<T> stack = new CustomStack<>();
+
+    for (T root : roots) {
+      if (!visitedSet.contains(root)) {
+        visited.add(root);
+        visitedSet.add(root);
+        stack.push(root);
+      }
+
+      while (!stack.isEmpty()) {
+        T current = stack.pop();
+        for (Edge<T> edge : edges) {
+          if (edge.getSource().equals(current) && !visitedSet.contains(edge.getDestination())) {
+            Set<T> vert = getVerticies(current);
+            for (T v : vert) {
+              if (!visitedSet.contains(v)) {
+                visited.add(v);
+                visitedSet.add(v);
+                stack.push(v);
+              }
+              Set<T> vert2 = getVerticies(v);
+              for (T v2 : vert2) {
+                if (!visitedSet.contains(v2)) {
+                  visited.add(v2);
+                  visitedSet.add(v2);
+                  stack.push(v2);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return visited;
+    // throw new UnsupportedOperationException();
   }
 
   private class CustomQueue<T> {
@@ -286,88 +329,65 @@ public class Graph<T extends Comparable<T>> {
     private CustomLinkedList<T> list;
 
     public CustomStack() {
-        list = new CustomLinkedList<>();
+      list = new CustomLinkedList<>();
     }
 
     public void push(T data) {
-        list.addFirst(data);
+      list.addFirst(data);
     }
 
     public T pop() {
-        if (isEmpty()) {
-            //throw new NoSuchElementException("Stack is empty");
-        }
+      if (isEmpty()) {
+        // throw new NoSuchElementException("Stack is empty");
+      }
 
-        T data = list.getFirst();
-        list.removeFirst();
-        return data;
+      T data = list.getFirst();
+      list.removeFirst();
+      return data;
     }
 
     public boolean isEmpty() {
-        return list.isEmpty();
+      return list.isEmpty();
     }
-}
-class CustomLinkedList<T> {
-  private Node<T> head;
+  }
 
-  public void addFirst(T data) {
+  class CustomLinkedList<T> {
+    private Node<T> head;
+
+    public void addFirst(T data) {
       Node<T> newNode = new Node<>(data);
       newNode.next = head;
       head = newNode;
-  }
+    }
 
-  public T getFirst() {
+    public T getFirst() {
       if (isEmpty()) {
-          //throw new NoSuchElementException("List is empty");
+        // throw new NoSuchElementException("List is empty");
       }
 
       return head.data;
-  }
+    }
 
-  public void removeFirst() {
+    public void removeFirst() {
       if (isEmpty()) {
-          //throw new NoSuchElementException("List is empty");
+        // throw new NoSuchElementException("List is empty");
       }
 
       head = head.next;
-  }
+    }
 
-  public boolean isEmpty() {
+    public boolean isEmpty() {
       return head == null;
-  }
+    }
 
-  private static class Node<T> {
+    class Node<T> {
       private T data;
       private Node<T> next;
 
       public Node(T data) {
-          this.data = data;
+        this.data = data;
       }
-  }
-}
-
-  public List<T> iterativeDepthFirstSearch() {
-    List<T> visited = new ArrayList<>();
-        Set<T> visitedSet = new HashSet<>();
-        CustomStack<T> stack = new CustomStack<>();
-        stack.push(verticies.iterator().next());
-
-        while (!stack.isEmpty()) {
-            T current = stack.pop();
-            if (!visitedSet.contains(current)) {
-                visited.add(current);
-                visitedSet.add(current);
-
-                for (Edge<T> edge : edges) {
-                    if (edge.getSource().equals(current) && !visitedSet.contains(edge.getDestination())) {
-                        stack.push(edge.getDestination());
-                    }
-                }
-            }
-        }
-
-        return visited;
-    //throw new UnsupportedOperationException();
+    }
   }
 
   public List<T> recursiveBreadthFirstSearch() {
